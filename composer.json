@@ -1,0 +1,22 @@
+{
+    "name": "tanuki-form/tanuki-mail-sender-handler",
+    "description": "mail sender handler for Tanuki",
+    "keywords": ["form", "headless"],
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "green spot",
+            "email": "in.green.spot@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Tanuki\\": "src/includes/"
+        }
+    },
+    "require": {
+        "phpmailer/phpmailer": "^7.0",
+        "twig/twig": "^3.22"
+    }
+}
