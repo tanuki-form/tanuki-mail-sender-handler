@@ -18,11 +18,11 @@ class MailSenderHandler extends AbstractHandler {
     $this->mailer->Timeout = 5;
 
     // Charset
-    $this->mailer->CharSet = $config['mailer']['charset'] ?? 'UTF-8';
+    $this->mailer->CharSet = $config['charset'] ?? 'UTF-8';
 
     // SMTP
-    if(isset($config['mailer']['smtp'])) {
-      $smtp = $config['mailer']['smtp'];
+    if(isset($config['smtp'])) {
+      $smtp = $config['smtp'];
       $this->mailer->isSMTP();
       $this->mailer->Host = $smtp['host'] ?? '';
       $this->mailer->SMTPAuth = $smtp['auth'] ?? true;
@@ -35,58 +35,55 @@ class MailSenderHandler extends AbstractHandler {
     }
 
     // From
-    if(!empty($config['mailer']['from'])) {
-      $this->mailer->setFrom(
-        $config['mailer']['from'] ?? '',
-        $config['mailer']['from_name'] ?? ''
-      );
+    if(!empty($config['from'])) {
+      $this->mailer->setFrom($config['from'], $config['fromName'] ?? '');
     }
 
     // Reply-To
-    if(!empty($config['mailer']['reply_to'])) {
+    if(!empty($config['replyTo'])) {
       $this->mailer->addReplyTo(
-        $config['mailer']['reply_to'] ?? '',
-        $config['mailer']['reply_to_name'] ?? ''
+        $config['replyTo'] ?? '',
+        $config['replyToName'] ?? ''
       );
     }
 
     // CC
-    if(!empty($config['mailer']['cc'])) {
-      foreach($config['mailer']['cc'] as $cc) {
+    if(!empty($config['cc'])) {
+      foreach($config['cc'] as $cc) {
         $this->mailer->addCC($cc);
       }
     }
 
     // BCC
-    if(!empty($config['mailer']['bcc'])) {
-      foreach($config['mailer']['bcc'] as $bcc) {
+    if(!empty($config['bcc'])) {
+      foreach($config['bcc'] as $bcc) {
         $this->mailer->addBCC($bcc);
       }
     }
 
     // Subject
-    if(!empty($config['mailer']['subject'])) {
-      $this->mailer->Subject = $config['mailer']['subject'];
+    if(!empty($config['subject'])) {
+      $this->mailer->Subject = $config['subject'];
     }
 
     // To
-    if(!empty($config['mailer']['to'])) {
-      $this->mailer->addAddress($config['mailer']['to']);
+    if(!empty($config['to'])) {
+      $this->mailer->addAddress($config['to'], $config['toName'] ?? '');
     }
   }
   public function handle(Form $form, HandlerPipelineContext $context): HandlerResult {
     $data = $form->getNormalizedData();
 
     // Body
-    if(!empty($this->config['body_template'])) {
+    if(!empty($this->config['bodyTemplate'])) {
       $twig = $this->getTwig();
-      $template = $twig->createTemplate($this->config['body_template']);
+      $template = $twig->createTemplate($this->config['bodyTemplate']);
       $this->mailer->Body = $template->render(['data' => $data]);
     }
 
     // To field
-    if(!empty($this->config['mailer']['to_field']) && isset($data[$this->config['mailer']['to_field']])) {
-      $this->mailer->addAddress($data[$this->config['mailer']['to_field']]);
+    if(!empty($this->config['toField']) && isset($data[$this->config['toField']])) {
+      $this->mailer->addAddress($data[$this->config['toField']]);
     }
 
     // Send email
