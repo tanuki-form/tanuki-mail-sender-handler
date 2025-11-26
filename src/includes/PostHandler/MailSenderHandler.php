@@ -85,7 +85,7 @@ class MailSenderHandler extends AbstractHandler {
     }
 
     // To field
-    if(!empty($this->config['mailer']['to_field']) && isset($formData[$this->config['mailer']['to_field']])) {
+    if(!empty($this->config['mailer']['to_field']) && isset($data[$this->config['mailer']['to_field']])) {
       $this->mailer->addAddress($data[$this->config['mailer']['to_field']]);
     }
 
