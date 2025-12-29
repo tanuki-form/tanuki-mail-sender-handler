@@ -9,12 +9,7 @@ use Tanuki\HandlerResult;
 use PHPMailer\PHPMailer\PHPMailer;
 
 class MailSenderHandler extends AbstractHandler {
-  public array $config = [];
   private PHPMailer $mailer;
-
-  public function __construct(array $config = []) {
-    $this->config = $config;
-  }
 
   public function handle(Form $form, HandlerPipelineContext $context): HandlerResult {
     $data = $form->getNormalizedData();
